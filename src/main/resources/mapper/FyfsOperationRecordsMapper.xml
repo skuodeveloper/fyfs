@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nhga.fyfs.mapper.FyfsOperationRecordsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.nhga.fyfs.model.FyfsOperationRecords">
+        <id column="ProcessInstanceId" property="processInstanceId" />
+        <result column="operation_records_id" property="operationRecordsId" />
+        <result column="userid" property="userid" />
+        <result column="udate" property="udate" />
+        <result column="operation_type" property="operationType" />
+        <result column="operation_result" property="operationResult" />
+        <result column="remark" property="remark" />
+        <result column="sign" property="sign" />
+    </resultMap>
+
+    <insert id="addOperationRecords" parameterType="com.nhga.fyfs.model.FyfsOperationRecords">
+        INSERT INTO fyfs_operation_records
+        ( ProcessInstanceId, operation_records_id, userid, udate, operation_type, operation_result,remark)
+        VALUES(
+        #{ProcessInstanceId},
+        #{operationRecordsId},
+        #{userid},
+        #{udate},
+        #{operationType},
+        #{operationResult},
+        hex(AES_ENCRYPT(#{remark}, '95352362a9d342ae80043298989ff442')))
+    </insert>
+</mapper>

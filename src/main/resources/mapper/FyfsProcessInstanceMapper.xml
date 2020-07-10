@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nhga.fyfs.mapper.FyfsProcessInstanceMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.nhga.fyfs.model.FyfsProcessInstance">
+        <id column="ProcessInstanceId" property="processInstanceId" />
+        <result column="title" property="title" />
+        <result column="create_time" property="createTime" />
+        <result column="finish_time" property="finishTime" />
+        <result column="rw_time" property="rwTime" />
+        <result column="originator_userid" property="originatorUserid" />
+        <result column="originator_dept_id" property="originatorDeptId" />
+        <result column="originator_dept_name" property="originatorDeptName" />
+        <result column="status" property="status" />
+        <result column="cc_userids" property="ccUserids" />
+        <result column="business_id" property="businessId" />
+        <result column="result" property="result" />
+        <result column="biz_action" property="bizAction" />
+        <result column="attached_process_instance_ids" property="attachedProcessInstanceIds" />
+    </resultMap>
+
+    <insert id="addProcess" parameterType="com.nhga.fyfs.model.FyfsProcessInstance">
+        INSERT INTO fyfs_process_instance
+        ( ProcessInstanceId, title, create_time, finish_time, originator_userid,originator_dept_id,originator_dept_name,status,
+        cc_userids,business_id,result,biz_action,attached_process_instance_ids)
+        VALUES(
+        #{ProcessInstanceId},
+        hex(AES_ENCRYPT(#{title}, '95352362a9d342ae80043298989ff442')),
+        #{createTime},
+        #{finishTime},
+        #{originatorUserid},
+        #{originatorDeptId},
+        #{originatorDeptName},
+        #{status},
+        #{ccUserids},
+        #{businessId},
+        #{result},
+        #{bizAction},
+        #{attachedProcessInstanceIds})
+    </insert>
+
+    <!-- 更新审批表-->
+    <update id="updProcess" parameterType="com.nhga.fyfs.model.FyfsProcessInstance">
+        UPDATE fyfs_process_instance
+        SET
+        title = hex(AES_ENCRYPT(#{title}, '95352362a9d342ae80043298989ff442')),
+        create_time = #{createTime},
+        finish_time = #{finishTime},
+        originator_userid = #{originatorUserid},
+        originator_dept_id = #{originatorDeptId},
+        originator_dept_name = #{originatorDeptName},
+        status = #{status},
+        cc_userids = #{ccUserids},
+        business_id = #{businessId},
+        result = #{result},
+        biz_action = #{bizAction},
+        attached_process_instance_ids = #{attachedProcessInstanceIds}
+        where  ProcessInstanceId = #{ProcessInstanceId}
+    </update>
+</mapper>
